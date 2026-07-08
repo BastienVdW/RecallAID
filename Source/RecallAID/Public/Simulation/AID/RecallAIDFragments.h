@@ -6,8 +6,9 @@
 
 #pragma once
 
-#include "MassEntityElementTypes.h"
-#include "MassEntityHandle.h"
+#include "Mass/EntityElementTypes.h"
+#include "Mass/EntityHandle.h"
+#include "Mass/ExternalSubsystemTraits.h"
 #include "AID/RecallAIDSpawnPointSettings.h"
 
 #include "RecallAIDFragments.generated.h"
@@ -51,6 +52,12 @@ struct RECALLAID_API FRecallAIDFragment : public FMassFragment
 	/** Current AID state name (empty = default state using all spawn groups) */
 	UPROPERTY(VisibleAnywhere)
 	FName CurrentAIDStateName;
+};
+
+template <>
+struct TMassFragmentTraits<FRecallAIDFragment> final
+{
+	enum { AuthorAcceptsItsNotTriviallyCopyable = true };
 };
 
 /**

@@ -21,9 +21,9 @@
 URecallAIDirectorInitializer::URecallAIDirectorInitializer()
 	: EntityQuery(*this)
 {
-	ExecutionFlags = static_cast<int32>(EExtendedProcessorExecutionFlags::All);
-	ObservedType = FRecallAIDFragment::StaticStruct();
-	Operation = EMassObservedOperation::Add;
+	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
+	ObservedTypes.Add(FRecallAIDFragment::StaticStruct());
+	ObservedOperations = EMassObservedOperationFlags::Add;
 }
 
 void URecallAIDirectorInitializer::InitializeInternal(UObject& Owner, const TSharedRef<FMassEntityManager>& InEntityManager)
@@ -93,7 +93,7 @@ URecallAIDSpawnProcessor::URecallAIDSpawnProcessor()
 	: SpawnPointEntityQuery(*this)
 	, DirectorEntityQuery(*this)
 {
-	ExecutionFlags = static_cast<int32>(EExtendedProcessorExecutionFlags::All);
+	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
 	ProcessingPhase = EMassProcessingPhase::PrePhysics;
 }
 
@@ -121,7 +121,7 @@ void URecallAIDSpawnProcessor::InitializeInternal(UObject& Owner, const TSharedR
 void URecallAIDSpawnProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
 	FMassTagBitSet SpawnPointRequiredTags;
-	SpawnPointRequiredTags.Add(*FRecallAIDSpawnPointRelevantTag::StaticStruct());
+	SpawnPointRequiredTags.Add(FRecallAIDSpawnPointRelevantTag::StaticStruct());
 	
 	SpawnPointEntityQuery.AddRequirement<FRecallTransformFragment>(EMassFragmentAccess::ReadOnly);
 	SpawnPointEntityQuery.AddRequirement<FRecallAIDSpawnPointFragment>(EMassFragmentAccess::ReadWrite);
@@ -230,7 +230,7 @@ void URecallAIDSpawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 URecallAIDStateChangeProcessor::URecallAIDStateChangeProcessor()
 	: EntityQuery(*this)
 {
-	ExecutionFlags = static_cast<int32>(EExtendedProcessorExecutionFlags::All);
+	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
 	ProcessingPhase = EMassProcessingPhase::PrePhysics;
 }
 
@@ -286,9 +286,9 @@ void URecallAIDStateChangeProcessor::Execute(FMassEntityManager& EntityManager, 
 URecallAIDMobDestroyObserver::URecallAIDMobDestroyObserver()
 	: EntityQuery(*this)
 {
-	ExecutionFlags = static_cast<int32>(EExtendedProcessorExecutionFlags::All);
-	ObservedType = FRecallAIDMobTrackingFragment::StaticStruct();
-	Operation = EMassObservedOperation::Remove;
+	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
+	ObservedTypes.Add(FRecallAIDMobTrackingFragment::StaticStruct());
+	ObservedOperations = EMassObservedOperationFlags::Remove;
 }
 
 void URecallAIDMobDestroyObserver::InitializeInternal(UObject& Owner, const TSharedRef<FMassEntityManager>& InEntityManager)
